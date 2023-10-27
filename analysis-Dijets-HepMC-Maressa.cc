@@ -4,8 +4,8 @@
 #include "HepMC/GenParticle.h"
 #include "HepMC/GenVertex.h"
 #include "HepMC/IO_GenEvent.h"
-#include "HepPDT/TableBuilder.hh"
-#include "HepPDT/ParticleDataTable.hh"
+// #include "HepPDT/TableBuilder.hh"
+// #include "HepPDT/ParticleDataTable.hh"
 
 #include "fastjet/ClusterSequence.hh"
 #include "fastjet/PseudoJet.hh"
@@ -141,6 +141,7 @@ int main(int argc, char** argv) {
    */
 
    // Build HepPDT particle table
+   /*
    const char infile[] = "/cvmfs/sft.cern.ch/lcg/releases/LCG_104/HepPDT/2.06.01/x86_64-centos7-gcc11-opt/data/particle.tbl";   
    std::ifstream pdfile( infile );
    if( !pdfile ) { 
@@ -171,11 +172,12 @@ int main(int argc, char** argv) {
  	  << std::setw(15) << q3 << std::endl;
    }
    std::cout << oss.str();
+   */
 
    //================================================================
    // FastJet
    //==================================================================
-   double Rparam = 0.8;
+   double Rparam = 0.4;
    fastjet::Strategy                strategy = fastjet::Best;
    fastjet::RecombinationScheme recombScheme = fastjet::E_scheme;
    fastjet::JetDefinition            *jetDef = NULL;
@@ -197,7 +199,7 @@ int main(int argc, char** argv) {
    double mu_phi[NMUMAX];
    double mu_energy[NMUMAX];
    double mu_mass[NMUMAX];
-   double mu_charge[NMUMAX];
+   // double mu_charge[NMUMAX];
 
    int const NEMAX = 50;
    int n_e = 0;
@@ -209,8 +211,9 @@ int main(int argc, char** argv) {
    double e_phi[NEMAX];
    double e_energy[NEMAX];
    double e_mass[NEMAX];
-   double e_charge[NEMAX];
+   // double e_charge[NEMAX];
 
+   /*
    int const NCHGMAX =300;  
    int n_chg = 0;
    int chg_id[NCHGMAX];
@@ -223,6 +226,7 @@ int main(int argc, char** argv) {
    double chg_phi[NCHGMAX];
    double chg_energy[NCHGMAX];
    double chg_mass[NCHGMAX];
+   */
 
    int const PROTONMAX = 100;
    int n_proton =0;
@@ -254,7 +258,7 @@ int main(int argc, char** argv) {
    T->Branch("mu_phi", &mu_phi,"mu_phi[n_mu]/D");
    T->Branch("mu_energy", &mu_energy,"mu_energy[n_mu]/D");
    T->Branch("mu_mass", &mu_mass,"mu_mass[n_mu]/D");
-   T->Branch("mu_charge", &mu_charge,"mu_charge[n_mu]/D");
+   // T->Branch("mu_charge", &mu_charge,"mu_charge[n_mu]/D");
 
    T->Branch("n_e", &n_e,"n_e/I");
    T->Branch("e_pt", &e_pt,"e_pt[n_e]/D");
@@ -265,8 +269,9 @@ int main(int argc, char** argv) {
    T->Branch("e_phi", &e_phi,"e_phi[n_e]/D");
    T->Branch("e_energy", &e_energy,"e_energy[n_e]/D");
    T->Branch("e_mass", &e_mass,"e_mass[n_e]/D");
-   T->Branch("e_charge", &e_charge,"e_charge[n_e]/D");
+   // T->Branch("e_charge", &e_charge,"e_charge[n_e]/D");
 
+   /*
    T->Branch("n_chg", &n_chg,"n_chg/I");
    T->Branch("chg_id", &chg_id,"chg_id[n_chg]/I");
    T->Branch("chg_ch", &chg_ch,"chg_ch[n_chg]/D");
@@ -278,6 +283,7 @@ int main(int argc, char** argv) {
    T->Branch("chg_phi", &chg_phi,"chg_phi[n_chg]/D");
    T->Branch("chg_energy", &chg_energy,"chg_energy[n_chg]/D");
    T->Branch("chg_mass", &chg_mass,"chg_mass[n_chg]/D");
+   */
 
    //Proton
    T->Branch("n_proton", &n_proton,"n_proton/I");
@@ -309,7 +315,7 @@ int main(int argc, char** argv) {
    TH1F* h_mu_phi = new TH1F("mu_phi","mu_phi",1000,-M_PI,M_PI);
    TH1F* h_mu_energy = new TH1F("mu_energy","mu_energy",1000,0.,1000.);
    TH1F* h_mu_mass = new TH1F("mu_mass","mu_mass",100,0.,100.);
-   TH1F* h_mu_charge = new TH1F("mu_charge","mu_charge",10,-10.,10.);
+   // TH1F* h_mu_charge = new TH1F("mu_charge","mu_charge",10,-10.,10.);
 
    TH1F* h_ne = new TH1F("ne","ne",10,0.,10.);
    TH1F* h_e_pt = new TH1F("e_pt","e_pt",1000,0.,1000.);
@@ -320,9 +326,10 @@ int main(int argc, char** argv) {
    TH1F* h_e_phi = new TH1F("e_phi","e_phi",1000,-M_PI,M_PI);
    TH1F* h_e_energy = new TH1F("e_energy","e_energy",1000,0.,1000.);
    TH1F* h_e_mass = new TH1F("e_mass","e_mass",100,0.,100.);
-   TH1F* h_e_charge = new TH1F("e_charge","e_charge",10,-10.,10.);
+   // TH1F* h_e_charge = new TH1F("e_charge","e_charge",10,-10.,10.);
 
    //Particulas carregadas
+   /*
    TH1F* h_nchg = new TH1F("nchg","nchg",100,0.,100.);
    TH1F* h_chg_id = new TH1F("chg_id","chg_id",4000,-2000.,2000.);
    TH1F* h_chg_ch = new TH1F("chg_ch","chg_ch",1000,-1000.,1000.);
@@ -334,6 +341,7 @@ int main(int argc, char** argv) {
    TH1F* h_chg_phi = new TH1F("chg_phi","chg_phi",100,-M_PI,M_PI);
    TH1F* h_chg_energy = new TH1F("chg_energy","chg_energy",1000,0.,1000.);
    TH1F* h_chg_mass = new TH1F("chg_mass","chg_mass",100,0.,140.);
+   */
 
    TH1F* h_nproton = new TH1F("nproton","nproton",100,0.,50.);
    TH1F* h_proton_pt = new TH1F("proton_pt","proton_pt",100,0.,1000.);
@@ -381,7 +389,8 @@ int main(int argc, char** argv) {
 	 mu_phi[imu] = -999.;
 	 mu_energy[imu] = -999.;
 	 mu_mass[imu] = -999.;
-	 mu_charge[imu] = -999.; }
+	 // mu_charge[imu] = -999.; 
+      }
 
       n_e = 0;
       for(int ie = 0; ie < NEMAX; ++ie) {
@@ -393,8 +402,10 @@ int main(int argc, char** argv) {
 	 e_phi[ie] = -999.; 
 	 e_energy[ie] = -999.;
 	 e_mass[ie] = -999.;
-	 e_charge[ie] = -999.; }
+	 // e_charge[ie] = -999.; 
+      }
 
+      /*
       n_chg = 0;
       for(int ichg = 0; ichg < NCHGMAX; ++ichg) {
 	 chg_id[ichg] = -999;
@@ -407,6 +418,7 @@ int main(int argc, char** argv) {
 	 chg_phi[ichg] = -999.;
 	 chg_energy[ichg] = -999.;
 	 chg_mass[ichg] = -999.; }
+    */
 
       n_proton=0; 
       for(int iproton = 0; iproton < PROTONMAX; ++iproton) {
@@ -444,10 +456,10 @@ int main(int argc, char** argv) {
 	 if ( isfinal_(*p) && abs( (*p)->pdg_id() ) == 13 && (*p)->momentum().perp() >= 5.0 && fabs( (*p)->momentum().eta() ) <= 2.4 ) {
 	    int pdg_id = (*p)->pdg_id();
 
-	    HepPDT::ParticleData * pd_mu;
-	    pd_mu = pdt.particle( HepPDT::ParticleID( pdg_id ) );
-	    double mucharge = pd_mu->charge(); 
-	    mu_charge[n_mu] = mucharge;
+	    // HepPDT::ParticleData * pd_mu;
+	    // pd_mu = pdt.particle( HepPDT::ParticleID( pdg_id ) );
+	    // double mucharge = pd_mu->charge(); 
+	    // mu_charge[n_mu] = mucharge;
 	    mu_pt[n_mu] = (*p)->momentum().perp();
 	    mu_px[n_mu] = (*p)->momentum().px();
 	    mu_py[n_mu] = (*p)->momentum().py();
@@ -465,7 +477,7 @@ int main(int argc, char** argv) {
 	    h_mu_phi->Fill(mu_phi[n_mu] );
 	    h_mu_energy->Fill(mu_energy[n_mu] );
 	    h_mu_mass->Fill(mu_mass[n_mu] );
-	    h_mu_charge->Fill(mu_charge[n_mu]);
+	    // h_mu_charge->Fill(mu_charge[n_mu]);
 	    ++n_mu;
 	 }
 
@@ -474,10 +486,10 @@ int main(int argc, char** argv) {
 	 if ( isfinal_(*p) && abs( (*p)->pdg_id() ) == 11 && (*p)->momentum().perp() >= 5.0 && fabs( (*p)->momentum().eta() ) <= 2.5 ) {
 	    int pdg_id = (*p)->pdg_id();
 
-	    HepPDT::ParticleData * pd_e;
-	    pd_e = pdt.particle( HepPDT::ParticleID( pdg_id ) );
-	    double echarge = pd_e->charge(); 
-	    e_charge[n_e] = echarge;
+	    // HepPDT::ParticleData * pd_e;
+	    // pd_e = pdt.particle( HepPDT::ParticleID( pdg_id ) );
+	    // double echarge = pd_e->charge(); 
+	    // e_charge[n_e] = echarge;
 	    e_pt[n_e] = (*p)->momentum().perp();
 	    e_px[n_e] = (*p)->momentum().px();
 	    e_py[n_e] = (*p)->momentum().py();
@@ -495,7 +507,7 @@ int main(int argc, char** argv) {
 	    h_e_phi->Fill( e_phi[n_e] );
 	    h_e_energy->Fill( e_pt[n_e] );
 	    h_e_mass->Fill( e_pt[n_e] );
-	    h_e_charge->Fill(e_charge[n_e]);
+	    // h_e_charge->Fill(e_charge[n_e]);
 	    ++n_e;
 	 }
 
@@ -538,6 +550,7 @@ int main(int argc, char** argv) {
 	 }
 
 	 // Looking for charged particles
+    /*
 	 if ( isfinal_(*p) ){
 	    int pdg_id = (*p)->pdg_id();
 	    HepPDT::ParticleData * pd;
@@ -568,6 +581,7 @@ int main(int argc, char** argv) {
 	       ++n_chg;
 	    }
 	 }
+    */
 
          // Jet particles
 	 if ( isfinal_(*p) ){
@@ -609,7 +623,7 @@ int main(int argc, char** argv) {
       h_nmu->Fill(n_mu);
       h_ne->Fill(n_e);
       h_nproton->Fill(n_proton);
-      h_nchg->Fill( n_chg );
+      // h_nchg->Fill( n_chg );
       h_njet->Fill( n_jet );
 
       T->Fill();
@@ -640,7 +654,7 @@ int main(int argc, char** argv) {
    h_mu_phi->Write();
    h_mu_energy->Write();
    h_mu_mass->Write();
-   h_mu_charge->Write();
+   // h_mu_charge->Write();
 
    h_ne->Write();
    h_e_pt->Write();
@@ -651,8 +665,9 @@ int main(int argc, char** argv) {
    h_e_phi->Write();
    h_e_energy->Write();
    h_e_mass->Write();
-   h_e_charge->Write();
+   // h_e_charge->Write();
 
+   /*
    h_nchg->Write();
    h_chg_id->Write();
    h_chg_ch->Write();
@@ -664,6 +679,7 @@ int main(int argc, char** argv) {
    h_chg_phi->Write();
    h_chg_energy->Write();
    h_chg_mass->Write();
+   */
 
    h_nproton->Write();
    h_proton_px->Write();

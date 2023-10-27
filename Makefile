@@ -11,14 +11,16 @@
 ################################################################################ Define directory paths 
 #    You may have to change GENSERdir and/or other variables
 #
-  HepMCdir             = /afs/cern.ch/work/a/antoniov/Workspace/HEP-Generators/HepMC-2.06.08-x86_64-slc6-gcc481
+  HepMCdir             = /cvmfs/sft.cern.ch/lcg/views/LCG_104/x86_64-centos7-gcc11-opt/
+#  HepMCdir             = /afs/cern.ch/work/a/antoniov/Workspace/HEP-Generators/HepMC-2.06.08-x86_64-slc6-gcc481
 #  HepMCdir             = /afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc5-gcc46-opt
 #  ROOTdir              = 
   HepMClib             = -L$(HepMCdir)/lib -lHepMC
   HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
   GENSERdir            =  
 #  CLHEPdir             = /afs/cern.ch/sw/lcg/external/clhep/2.1.4.1/x86_64-slc5-gcc46-opt
-  HepPDTdir            = /afs/cern.ch/work/a/antoniov/Workspace/HEP-Generators/HepPDT-3.04.01-x86_64-slc6-gcc481
+  HepPDTdir            = /cvmfs/sft.cern.ch/lcg/views/LCG_104/x86_64-centos7-gcc11-opt/
+#  HepPDTdir            = /afs/cern.ch/work/a/antoniov/Workspace/HEP-Generators/HepPDT-3.04.01-x86_64-slc6-gcc481
   HepPDTlib            = -L$(HepPDTdir)/lib -lHepPDT -lHepPID
 #  Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
                   -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
@@ -26,12 +28,12 @@
                   -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
 #  ROOTLIBS = $(shell root-config --libs) -lMinuit -lEG
   ROOTLIBS    = $(shell root-config --libs) -lGenVector
-  FASTJETLIBS = $(shell /afs/cern.ch/work/a/antoniov/Workspace/HEP-Generators/fastjet-3.1.3-x86_64-slc6-gcc481/bin/fastjet-config --libs --plugins)
+  FASTJETLIBS = $(shell fastjet-config --libs --plugins)
 ################################################################################ Compiler options
 #
   CXX           = g++
   INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include -I$(HepPDTdir)/include
-  CXXFLAGS      =  -ansi -pedantic -Wall -Wno-long-long -g -O2 $(shell root-config --cflags) $(shell /afs/cern.ch/work/a/antoniov/Workspace/HEP-Generators/fastjet-3.1.3-x86_64-slc6-gcc481/bin/fastjet-config --cxxflags) $(INCLUDES)
+  CXXFLAGS      =  -ansi -pedantic -Wall -Wno-long-long -g -O2 $(shell root-config --cflags) $(shell fastjet-config --cxxflags) $(INCLUDES)
 ifeq "$(CXX)" "g++"
    F77           = g77
    FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
@@ -147,11 +149,19 @@ analysis-gamgamZZ-HepMC.exe: analysis-gamgamZZ-HepMC.o
                 $(FASTJETLIBS) \
 	        $(LINK_LIBS) -o $@
 
-analysis-Dijets-HepMC.exe: analysis-Dijets-HepMC.o
+analysis-Dijets-HepMC: analysis-Dijets-HepMC.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) analysis-Dijets-HepMC.o \
 		$(HepMClib) \
 		$(HepPDTlib) \
+                $(ROOTLIBS) \
+                $(FASTJETLIBS) \
+	        $(LINK_LIBS) -o $@
+
+analysis-Dijets-HepMC-Maressa: analysis-Dijets-HepMC-Maressa.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) analysis-Dijets-HepMC-Maressa.o \
+		$(HepMClib) \
                 $(ROOTLIBS) \
                 $(FASTJETLIBS) \
 	        $(LINK_LIBS) -o $@
